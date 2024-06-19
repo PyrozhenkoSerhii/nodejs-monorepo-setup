@@ -1,0 +1,15 @@
+FROM node:20-alpine3.18
+USER root
+WORKDIR /app
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN npm install -g pnpm@latest
+
+COPY package.json .
+RUN pnpm install
+
+COPY nodemon.json .
+
+COPY ./packages/renderer ./packages/renderer
+COPY ./packages/shared ./packages/shared

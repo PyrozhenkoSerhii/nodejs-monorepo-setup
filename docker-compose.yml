@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  renderer:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.renderer
+    container_name: renderer
+    command: npm run renderer:dev
+    hostname: renderer
+    restart: "no"
+    volumes:
+      - ./packages/renderer:/app/packages/renderer
+      - ./packages/shared:/app/packages/shared
+    env_file:
+      - ./environment/.env.default
+      - ./environment/.env.renderer
+    ports:
+      - 8088:8088
+    depends_on:
+      - rabbitmq
+      - redis
+
+  rabbitmq:
+    image: bitnami/rabbitmq:3.11.9
+    restart: 'no'
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_USERNAME=${RABBIT_USER}
+      - RABBITMQ_PASSWORD=${RABBIT_PASSWORD}
+
+  redis:
+    image: redis/redis-stack:latest
+    restart: 'no'
+    container_name: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - ./data/redis:/bitnami/redis/data

@@ -1,0 +1,6 @@
+/data
+**/node_modules
+/environment/.env*
+!/environment/.env*.sample
+**/dist-tsc/**
+**/dist/**

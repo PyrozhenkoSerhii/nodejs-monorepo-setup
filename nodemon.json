@@ -1,0 +1,12 @@
+{
+  "ext": ".ts",
+  "watch": [
+    "./packages/shared",
+    "./packages/renderer"
+  ],
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/dist-tsc/**"
+  ]
+}
